@@ -2,10 +2,15 @@
 
 Editor de vídeo para creadores. Versión **1.0.0**. Es una PWA (HTML/JS/CSS) empaquetada con **Capacitor** para Android (10 o superior) y con **Electron** para escritorio.
 
-## Qué hace
-Importa un vídeo, lo recorta (inicio/final), añade un título, aplica filtros y ajustes de imagen y exporta a WebM (480p/720p/1080p; 9:16, 16:9 o 1:1). Todo se procesa en el dispositivo.
+## Qué hace (v2.0.0)
+- **Línea de tiempo multipista:** Video, Overlay (imagen sobre imagen, emojis, formas), Texto y Audio; varias pistas extra se crean solas. Arrastrar, recortar por los bordes, dividir (`S`), duplicar, eliminar, imán, zoom, deshacer/rehacer (`Ctrl+Z`/`Ctrl+Y`).
+- **Medios:** vídeo, foto y audio (con forma de onda). Todo se procesa y guarda en el dispositivo.
+- **Transiciones** (fundido, deslizar, zoom, cortina), **filtros**, ajustes de color, velocidad, opacidad, rotación, efectos (desenfoque, viñeta, espejo, pixelar).
+- **Texto** con plantillas y animaciones, **subtítulos** (importar/editar/exportar .srt), **emojis y formas**, **sonidos y música generados** sin conexión, **marca** (logo, colores, fuente).
+- **Proyecto guardado automáticamente** y formatos 9:16, 16:9, 1:1 y 4:5.
+- **Exportación** 480p/720p/1080p (4K experimental), 24/30/60 fps, MP4 (H.264) si el dispositivo lo permite o WebM. Va en tiempo real: dura lo mismo que el vídeo.
 
-En Android, al exportar el vídeo se guarda en `Documentos/VanguardCut/` y se abre el menú *Compartir* para enviarlo a tu nube personal (Drive, Dropbox, etc.).
+En Android, al exportar se guarda en `Documentos/VanguardCut/` y se abre *Compartir* para enviarlo a tu nube personal.
 
 ## Estructura
 - `www/` — la aplicación web (se edita aquí).
@@ -30,4 +35,7 @@ En Android, al exportar el vídeo se guarda en `Documentos/VanguardCut/` y se ab
 - Compilar local (necesita Android Studio y JDK 21): `npm run android:open`
 
 ## Limitaciones conocidas
-No es multipista; la exportación depende del soporte de `MediaRecorder` del WebView; no hay MP4 nativo.
+- La exportación es en tiempo real y necesita la app abierta y en primer plano.
+- Los WebM grabados por el navegador no llevan la duración en la cabecera (se reproducen bien, pero algunas redes los rechazan): usa MP4 cuando esté disponible.
+- Subtítulos automáticos con IA, descarga desde enlaces (TikTok, YouTube…), publicación directa en redes y cuentas/sincronización quedan para versiones posteriores (necesitan un servidor).
+- Stock de vídeos en línea: no incluido (requiere una clave de API).

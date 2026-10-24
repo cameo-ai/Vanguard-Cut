@@ -1,22 +1,141 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10131b"><meta name="description" content="Vanguard-Cut: editor de vídeo para creadores.">
-<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0d0d12">
+<meta name="description" content="Vanguard-Cut: editor de vídeo para creadores.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
 <title>Vanguard-Cut — Editor de vídeo</title>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="#" aria-label="Vanguard-Cut inicio"><span class="brandmark">◉</span> Vanguard-Cut</a><div class="project"><input id="projectName" aria-label="Nombre del proyecto" value="Mi primer vídeo"></div><span class="saved"><i></i><span id="saveStatus">Proyecto local</span></span><div class="top-actions"><button id="undoBtn" class="icon-btn" title="Reiniciar ajustes">↶</button><select id="aspect" aria-label="Formato"><option value="9:16">9:16 vertical</option><option value="16:9">16:9 horizontal</option><option value="1:1">1:1 cuadrado</option></select><button id="exportBtn" class="primary">Exportar vídeo</button></div></header>
-<div class="app-shell">
-<aside class="rail" aria-label="Herramientas"><button class="rail-btn active" data-panel="media"><b>▧</b><span>Medios</span></button><button class="rail-btn" data-panel="text"><b>T</b><span>Texto</span></button><button class="rail-btn" data-panel="filters"><b>◐</b><span>Filtros</span></button><button class="rail-btn" data-panel="adjust"><b>☼</b><span>Ajustes</span></button></aside>
-<aside class="sidebar"><section class="panel active" id="panel-media"><div class="panel-heading"><h2>Medios</h2><span class="muted">01</span></div><label class="upload primary" for="videoInput">＋ Importar vídeo</label><input id="videoInput" type="file" accept="video/*" hidden><p class="hint">El archivo se procesa localmente en tu navegador.</p><div id="mediaCard" class="media-card empty"><div class="media-thumb">▶</div><div><strong id="mediaName">Todavía no hay vídeos</strong><small id="mediaMeta">Importa un archivo para empezar</small></div></div><div class="section-label">PROYECTO</div><div class="info-row"><span>Formato</span><strong id="formatLabel">9:16 vertical</strong></div><div class="info-row"><span>Exportación</span><strong>WebM</strong></div></section>
-<section class="panel" id="panel-text"><div class="panel-heading"><h2>Texto</h2></div><label class="field-label" for="overlayText">Texto en pantalla</label><textarea id="overlayText" rows="3" placeholder="Escribe un título… (vacío = sin texto)"></textarea><label class="field-label" for="fontSize">Tamaño <output id="fontSizeOut">34 px</output></label><input id="fontSize" type="range" min="16" max="64" value="34"><label class="field-label" for="textColor">Color del texto</label><input id="textColor" type="color" value="#ffffff"><label class="field-label" for="textPosition">Posición</label><select id="textPosition"><option value="center">Centro</option><option value="top">Arriba</option><option value="bottom">Abajo</option></select><label class="check-row"><input id="textShadow" type="checkbox" checked> Sombra para mejorar lectura</label></section>
-<section class="panel" id="panel-filters"><div class="panel-heading"><h2>Filtros</h2></div><p class="hint">El filtro se aplica a la vista previa y al vídeo exportado.</p><div class="filter-grid"><button class="filter-choice selected" data-filter="none"><span class="filter-swatch natural"></span>Original</button><button class="filter-choice" data-filter="warm"><span class="filter-swatch warm"></span>Cálido</button><button class="filter-choice" data-filter="mono"><span class="filter-swatch mono"></span>Blanco y negro</button><button class="filter-choice" data-filter="vivid"><span class="filter-swatch vivid"></span>Intenso</button><button class="filter-choice" data-filter="fade"><span class="filter-swatch fade"></span>Suave</button><button class="filter-choice" data-filter="cool"><span class="filter-swatch cool"></span>Frío</button></div></section>
-<section class="panel" id="panel-adjust"><div class="panel-heading"><h2>Ajustes</h2></div><label class="field-label" for="brightness">Brillo <output id="brightnessOut">100%</output></label><input id="brightness" type="range" min="50" max="150" value="100"><label class="field-label" for="contrast">Contraste <output id="contrastOut">100%</output></label><input id="contrast" type="range" min="50" max="160" value="100"><label class="field-label" for="saturation">Saturación <output id="saturationOut">100%</output></label><input id="saturation" type="range" min="0" max="180" value="100"><button id="resetAdjust" class="secondary full">Restablecer ajustes</button></section></aside>
-<main class="workspace"><div class="preview-head"><div><h2>Vista previa</h2><span class="muted" id="previewSubtitle">Importa un vídeo para empezar</span></div><button id="fitBtn" class="icon-btn" title="Ajustar vista">⛶</button></div><div class="preview-stage"><div class="video-frame" id="videoFrame"><video id="video" playsinline preload="metadata"></video><div id="emptyState" class="empty-state"><div class="empty-icon">▶</div><strong>Tu historia empieza aquí</strong><span>Importa un vídeo desde el panel izquierdo</span><label class="primary upload-compact" for="videoInput">Seleccionar vídeo</label></div><div id="titleOverlay" class="title-overlay" hidden></div></div></div><div class="transport"><button id="playBtn" class="play-btn" aria-label="Reproducir">▶</button><span id="currentTime">00:00.0</span><div class="scrub"><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Posición del vídeo"></div><span id="duration">00:00.0</span><button id="muteBtn" class="icon-btn" title="Silenciar audio">◖))</button></div>
-<div class="timeline-header"><h2>Línea de tiempo</h2><div class="timeline-actions"><button id="splitHint" class="secondary">Cortar (en desarrollo)</button><button id="zoomOut" class="icon-btn">−</button><span id="zoomLabel">100%</span><button id="zoomIn" class="icon-btn">＋</button></div></div><div class="timeline"><div class="track-labels"><div>Vídeo</div><div>Texto</div><div>Audio</div></div><div class="tracks"><div class="ruler" id="ruler"><span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span><span>00:20</span></div><div class="track video-track"><div class="clip-block" id="videoClip"><span>▶</span><strong id="clipName">Tu vídeo</strong><small id="clipDuration">0:00</small></div></div><div class="track text-track"><div class="clip-block text-clip"><span>T</span><strong id="timelineText">Sin texto</strong></div></div><div class="track audio-track"><div class="clip-block audio-clip"><span>♫</span><strong>Audio original</strong></div></div><div class="playhead" id="playhead"></div></div></div><div class="trim-controls"><div class="trim-title"><strong>Recortar clip</strong><span class="muted">Selecciona el inicio y el final</span></div><label>Inicio <output id="startOut">0.0 s</output><input id="trimStart" type="range" min="0" max="1000" value="0"></label><label>Final <output id="endOut">0.0 s</output><input id="trimEnd" type="range" min="0" max="1000" value="1000"></label></div></main>
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="tb-left">
+      <div class="logo"><img src="icons/icon-192.png" alt="" width="26" height="26"><b>Vanguard-Cut</b></div>
+      <input id="projName" class="proj-name" aria-label="Nombre del proyecto" value="Nuevo proyecto" maxlength="40">
+      <span class="save-state" title="Los proyectos y medios se guardan en este dispositivo"><span data-ic="cloud" data-size="16"></span><span id="saveState">Guardado en este dispositivo</span></span>
+    </div>
+    <div class="tb-center">
+      <button class="icon-btn" id="undoBtn" title="Deshacer (Ctrl+Z)" data-ic="undo" disabled></button>
+      <button class="icon-btn" id="redoBtn" title="Rehacer (Ctrl+Y)" data-ic="redo" disabled></button>
+    </div>
+    <div class="tb-right">
+      <select id="aspect" class="pill" aria-label="Formato">
+        <option value="9:16">9:16</option><option value="16:9">16:9</option><option value="1:1">1:1</option><option value="4:5">4:5</option>
+      </select>
+      <button class="icon-btn" id="themeBtn" title="Tema claro/oscuro" data-ic="moon"></button>
+      <button class="icon-btn" id="settingsBtn" title="Ajustes" data-ic="settings"></button>
+      <button class="primary" id="exportBtn"><span data-ic="export" data-size="16"></span><span class="lbl">Exportar</span></button>
+    </div>
+  </header>
+
+  <div class="main">
+    <nav class="rail" id="rail" aria-label="Herramientas">
+      <button data-tab="media" class="active"><span data-ic="film" data-size="22"></span><small>Medios</small></button>
+      <button data-tab="stock"><span data-ic="image" data-size="22"></span><small>Fondos</small></button>
+      <button data-tab="audio"><span data-ic="music" data-size="22"></span><small>Audio</small></button>
+      <button data-tab="text"><span data-ic="type" data-size="22"></span><small>Texto</small></button>
+      <button data-tab="elements"><span data-ic="shapes" data-size="22"></span><small>Elementos</small></button>
+      <button data-tab="transitions"><span data-ic="blend" data-size="22"></span><small>Transiciones</small></button>
+      <button data-tab="filters"><span data-ic="filters" data-size="22"></span><small>Filtros</small></button>
+      <button data-tab="brand"><span data-ic="brand" data-size="22"></span><small>Marca</small></button>
+    </nav>
+
+    <aside class="library sheet" id="library">
+      <div class="sheet-head"><b id="libTitle">Medios</b><button class="icon-btn sheet-close" data-close="library" data-ic="x"></button></div>
+      <div class="sheet-body" id="libBody"></div>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-wrap" id="stageWrap">
+        <div class="stage-box" id="stageBox">
+          <canvas id="stageCanvas" width="540" height="960"></canvas>
+          <div class="safe" id="safeZone" hidden></div>
+          <div class="selbox" id="selBox" hidden></div>
+          <div class="empty-hint" id="emptyHint"><b>Tu historia empieza aquí</b><span>Importa un vídeo desde Medios</span><button class="primary" id="emptyImport">Importar vídeo</button></div>
+        </div>
+      </div>
+      <div class="transport">
+        <button class="icon-btn" id="toStart" title="Inicio" data-ic="skipb"></button>
+        <button class="icon-btn play" id="playBtn" title="Reproducir (Espacio)" data-ic="play" data-size="22"></button>
+        <button class="icon-btn" id="toEnd" title="Final" data-ic="skipf"></button>
+        <span class="time"><span id="curTime">00:00.0</span> / <span id="totTime">00:00.0</span></span>
+        <span class="spacer"></span>
+        <button class="icon-btn" id="muteBtn" title="Silenciar vista previa" data-ic="vol"></button>
+        <button class="icon-btn only-mobile" id="inspBtn" title="Propiedades del clip" data-ic="sliders"></button>
+        <button class="icon-btn" id="fullBtn" title="Pantalla completa" data-ic="full"></button>
+      </div>
+    </section>
+
+    <aside class="inspector sheet" id="inspector">
+      <div class="sheet-head"><b>Propiedades</b><button class="icon-btn sheet-close" data-close="inspector" data-ic="x"></button></div>
+      <div class="insp-tabs" id="inspTabs">
+        <button data-itab="video" class="active">Video</button><button data-itab="audio">Audio</button><button data-itab="text">Texto</button><button data-itab="adjust">Ajustes</button>
+      </div>
+      <div class="sheet-body" id="inspBody"></div>
+    </aside>
+  </div>
+
+  <section class="timeline" id="timeline">
+    <div class="tl-bar">
+      <button class="icon-btn" id="splitBtn" title="Dividir en el cursor (S)" data-ic="scissors"></button>
+      <button class="icon-btn" id="dupBtn" title="Duplicar" data-ic="copy"></button>
+      <button class="icon-btn" id="delBtn" title="Eliminar (Supr)" data-ic="trash"></button>
+      <span class="spacer"></span>
+      <button class="icon-btn" id="zoomOut" title="Alejar" data-ic="minus"></button>
+      <button class="chip" id="zoomFit" title="Ajustar a la pantalla">Ajustar</button>
+      <button class="icon-btn" id="zoomIn" title="Acercar" data-ic="plus"></button>
+    </div>
+    <div class="tl-scroll" id="tlScroll"><div class="tl-inner" id="tlInner"></div></div>
+  </section>
 </div>
-<div id="exportModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="exportTitle"><div class="modal-card"><button id="closeModal" class="modal-close" aria-label="Cerrar">×</button><div class="export-symbol">↑</div><h2 id="exportTitle">Exportar vídeo</h2><p id="exportMessage">Elige la calidad para generar tu vídeo.</p><label class="field-label" for="exportQuality">Resolución</label><select id="exportQuality"><option value="720">HD · 720p (recomendado)</option><option value="1080">Full HD · 1080p</option><option value="480">SD · 480p</option></select><div id="exportProgressWrap" class="progress-wrap hidden"><div class="progress-bar"><span id="exportProgress"></span></div><small id="progressLabel">Preparando…</small></div><div class="modal-actions"><button id="cancelExport" class="secondary">Cancelar</button><button id="startExport" class="primary">Crear vídeo</button></div><a id="downloadLink" class="primary download-link hidden" download="vanguard-cut.webm">Descargar vídeo</a></div></div>
-<div id="toast" class="toast" role="status"></div><script src="native.js"></script><script src="app.js"></script>
-</body></html>
+
+<input id="fileInput" type="file" accept="video/*,image/*,audio/*" multiple hidden>
+<input id="logoInput" type="file" accept="image/*" hidden>
+<input id="srtInput" type="file" accept=".srt,text/plain" hidden>
+
+<div class="modal" id="exportModal" hidden role="dialog" aria-modal="true" aria-labelledby="exTitle">
+  <div class="card">
+    <button class="icon-btn modal-x" data-close="exportModal" data-ic="x" aria-label="Cerrar"></button>
+    <h2 id="exTitle">Exportar vídeo</h2>
+    <p class="muted" id="exMsg">La exportación se hace en tiempo real: dura lo mismo que tu vídeo. Mantén la app abierta.</p>
+    <label class="field"><span>Formato</span><select id="exFormat"></select></label>
+    <label class="field"><span>Resolución</span><select id="exRes"><option value="480">480p</option><option value="720" selected>720p HD</option><option value="1080">1080p Full HD</option><option value="2160">4K (experimental, solo equipos potentes)</option></select></label>
+    <label class="field"><span>Fotogramas</span><select id="exFps"><option value="24">24 fps</option><option value="30" selected>30 fps</option><option value="60">60 fps</option></select></label>
+    <label class="field"><span>Calidad</span><select id="exQual"><option value="low">Baja (archivo ligero)</option><option value="mid" selected>Media</option><option value="high">Alta</option></select></label>
+    <div class="progress" id="exProgWrap" hidden><div class="bar"><i id="exBar"></i></div><small id="exProgLbl">Preparando…</small></div>
+    <div class="row">
+      <button class="secondary" id="exCancel">Cancelar</button>
+      <button class="primary" id="exStart">Crear vídeo</button>
+    </div>
+    <a id="downloadLink" class="primary dl hidden" download="vanguard-cut.webm">Descargar vídeo</a>
+  </div>
+</div>
+
+<div class="modal" id="settingsModal" hidden role="dialog" aria-modal="true" aria-labelledby="stTitle">
+  <div class="card">
+    <button class="icon-btn modal-x" data-close="settingsModal" data-ic="x" aria-label="Cerrar"></button>
+    <h2 id="stTitle">Ajustes</h2>
+    <label class="check"><input type="checkbox" id="setSafe"> Mostrar zona segura en la vista previa</label>
+    <label class="check"><input type="checkbox" id="setSnap"> Imán en la línea de tiempo</label>
+    <div class="row"><button class="secondary" id="newProj">Proyecto nuevo</button><button class="secondary danger" id="wipeAll">Borrar todos los datos</button></div>
+    <p class="muted small">Vanguard-Cut v2.0.0 · Todo se procesa y guarda en este dispositivo.</p>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status"></div>
+
+<script src="native.js"></script>
+<script src="js/util.js"></script>
+<script src="js/store.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/timeline.js"></script>
+<script src="js/panels.js"></script>
+<script src="js/extras.js"></script>
+<script src="js/export.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
