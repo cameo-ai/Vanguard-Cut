@@ -1,0 +1,54 @@
+{
+  "name": "vanguard-cut",
+  "version": "1.0.0",
+  "description": "Vanguard-Cut — editor de vídeo para creadores (Android con Capacitor, escritorio con Electron)",
+  "main": "electron/main.js",
+  "author": "fer",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "web": "npx http-server www -p 8080 -c-1",
+    "android:sync": "cap sync android",
+    "android:open": "cap open android",
+    "desktop": "electron .",
+    "desktop:build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.fer.vanguardcut",
+    "productName": "Vanguard-Cut",
+    "directories": {
+      "output": "dist-desktop"
+    },
+    "files": [
+      "electron/**",
+      "www/**",
+      "resources/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "resources/icon.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "AudioVideo",
+      "icon": "resources/icon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "resources/icon.png"
+    }
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/share": "^8.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.3",
+    "electron": "^45.0.0",
+    "electron-builder": "^26.18.0"
+  }
+}

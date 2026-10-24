@@ -1,0 +1,6 @@
+{
+  "appId": "com.fer.vanguardcut",
+  "appName": "Vanguard-Cut",
+  "webDir": "www",
+  "android": { "allowMixedContent": false }
+}
